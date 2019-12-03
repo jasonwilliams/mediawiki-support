@@ -53,8 +53,9 @@ Added features X, Y, and Z.
 
 ### Useful links
 
-- https://macromates.com/manual/en/language_grammars
-- https://slebok.github.io/zoo/doc/wiki/mediawiki/bnf/connected/index.html#item-body
+- [Textmate Language Grammars](https://macromates.com/manual/en/language_grammars)
+- [BNF for media wiki](https://slebok.github.io/zoo/doc/wiki/mediawiki/bnf/connected/index.html#item-body)
+- [Wikitext Cheatsheet](https://en.wikipedia.org/wiki/Help:Cheatsheet)
 
 ## Working with Markdown
 
