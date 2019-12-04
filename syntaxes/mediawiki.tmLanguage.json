@@ -87,7 +87,7 @@
       "patterns": [
         {
           "name": "meta.tag.link.internal",
-          "begin": "(\\[\\[)\\s*(.+?)[ ]*(\\|)",
+          "begin": "(\\[\\[)\\s*([^\\[\\]]+?)\\s*(\\|)",
           "end": "\\]\\]",
           "beginCaptures": {
             "1": { "name": "punctuation.definition.tag.begin" },
