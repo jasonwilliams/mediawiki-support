@@ -2,149 +2,361 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "MediaWiki",
   "scopeName": "text.html.mediawiki",
-  "patterns": [{ "include": "#expression" }],
-  "fileTypes": ["mediawiki"],
+  "fileTypes": ["mediawiki", "wiki"],
+  "patterns": [
+    { "include": "#variable" },
+    { "include": "#comment" },
+    { "include": "#entity" },
+    { "include": "#emphasis" },
+    { "include": "#tag" },
+    { "include": "#table" },
+    { "include": "#hr" },
+    { "include": "#heading" },
+    { "include": "#link" },
+    { "include": "#list" },
+    { "include": "#template" }
+  ],
   "repository": {
-    "expression": {
+    "hr": { "patterns": [{ "name": "markup.bold", "match": "^[-]{4,}" }] },
+    "variable": {
       "patterns": [
-        { "include": "#heading1" },
-        { "include": "#heading2" },
-        { "include": "#heading3" },
-        { "include": "#heading4" },
-        { "include": "#heading5" },
-        { "include": "#heading6" },
-        { "include": "#comment" },
-        { "include": "#comments" },
-        { "include": "#italic" },
-        { "include": "#bold" },
-        { "include": "#link" },
-        { "include": "#bullet-item" }
-      ],
-      "name": "meta.expression.mediawiki"
-    },
-    "link": {
-      "begin": "(\\[\\[)",
-      "end": "(\\]\\])",
-      "name": "markup.underline.link.mediawiki",
-      "patterns": [
-        { "include": "#interwiki" },
-        { "include": "#category" },
-        { "include": "#namespace" },
-        { "include": "#namespacePrefix" }
+        {
+          "name": "storage.type.variable",
+          "begin": "{{{",
+          "end": "}}}",
+          "patterns": [
+            {
+              "match": "\\s*(\\w+)\\s*(\\|)?",
+              "captures": {
+                "1": { "name": "variable.other" },
+                "2": { "name": "keyword.operator" }
+              }
+            }
+          ]
+        }
       ]
     },
-    "namespace": {
-      "match": "\\w*",
-      "name": "namespace.link"
+    "entity": {
+      "patterns": [{ "name": "constant.character.entity", "match": "&\\w+;" }]
     },
-    "interwiki": {
-      "match": "Wikipedia",
-      "name": "keyword.other.interwikiprefix.link"
-    },
-    "category": {
-      "match": "Category",
-      "name": "keyword.other.categoryprefix.link"
-    },
-    "namespacePrefix": {
-      "match": ":",
-      "name": "punctuation.namespace"
-    },
-    "bullet-item": {
-      "begin": "\\*",
-      "end": "\\n",
-      "name": "markup.list.unnumbered"
-    },
-    "bold": {
-      "name": "markup.bold.mediawiki",
-      "begin": "'''",
-      "end": "'''"
-    },
-    "italic": {
-      "name": "markup.italic.mediawiki",
-      "begin": "''",
-      "end": "''"
-    },
-    "heading1": {
-      "match": "^(=)(?!=)(([^=]+))(\\1)s*$\n?",
-      "name": "markup.heading.1.mediawiki",
-      "captures": {
-        "1": {
-          "name": "punctuation.definition.headingname.mediawiki"
-        },
-        "2": {
-          "name": "entity.name.section.mediawiki"
+    "list": {
+      "patterns": [
+        {
+          "name": "markup.list",
+          "begin": "^([#*;:]+)",
+          "end": "$",
+          "beginCaptures": { "1": { "name": "markup.bold" } },
+          "patterns": [{ "include": "$self" }]
         }
-      }
+      ]
     },
-    "heading2": {
-      "match": "^(==)(?!=)(([^=]+))(\\1)s*$\n?",
-      "name": "markup.heading.2.mediawiki",
-      "captures": {
-        "1": {
-          "name": "punctuation.definition.headingname.mediawiki"
-        },
-        "2": {
-          "name": "entity.name.section.mediawiki"
+    "template": {
+      "patterns": [
+        {
+          "name": "meta.template",
+          "begin": "({{)\\s*([\\w ]+)\\s*",
+          "end": "}}",
+          "beginCaptures": {
+            "1": { "name": "storage.type.function" },
+            "2": { "name": "entity.name.function" }
+          },
+          "endCaptures": { "0": { "name": "storage.type.function" } },
+          "patterns": [
+            {
+              "name": "meta.template.attribute",
+              "begin": "(\\|)\\s*(\\w+)=",
+              "end": "(?=}}|[|])",
+              "beginCaptures": {
+                "1": { "name": "storage" },
+                "2": { "name": "variable.parameter.function" }
+              },
+              "patterns": [{ "include": "$self" }]
+            },
+            {
+              "name": "meta.template.value",
+              "begin": "(\\|)(.*?)",
+              "end": "(?=}}|[|])",
+              "captures": { "1": { "name": "storage" } },
+              "patterns": [{ "include": "$self" }]
+            }
+          ]
         }
-      }
+      ]
     },
-    "heading3": {
-      "match": "^(===)(?!=)(([^=]+))(\\1)s*$\n?",
-      "name": "markup.heading.3.mediawiki",
-      "captures": {
-        "1": {
-          "name": "punctuation.definition.headingname.mediawiki"
+    "link": {
+      "patterns": [
+        {
+          "name": "meta.tag.link.internal",
+          "begin": "(\\[\\[)\\s*(.+?)[ ]*(\\|)",
+          "end": "\\]\\]",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "markup.underline.link" },
+            "3": { "name": "punctuation.definition.tag" }
+          },
+          "endCaptures": { "0": { "name": "punctuation.definition.tag.end" } },
+          "contentName": "string.unquoted",
+          "patterns": [{ "include": "$self" }]
         },
-        "2": {
-          "name": "entity.name.section.mediawiki"
+        {
+          "name": "meta.tag.link.external",
+          "match": "(\\[)(.*?)[\\s]+(.*?)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "patterns": [{ "include": "#url" }] },
+            "3": { "name": "string.unquoted" },
+            "4": { "name": "punctuation.definition.tag.end" }
+          }
         }
-      }
-    },
-    "heading4": {
-      "match": "^(====)(?!=)(([^=]+))(\\1)s*$\n?",
-      "name": "markup.heading.4.mediawiki",
-      "captures": {
-        "1": {
-          "name": "punctuation.definition.headingname.mediawiki"
-        },
-        "2": {
-          "name": "entity.name.section.mediawiki"
-        }
-      }
-    },
-    "heading5": {
-      "match": "^(=====)(?!=)(([^=]+))(\\1)s*$\n?",
-      "name": "markup.heading.4.mediawiki",
-      "captures": {
-        "1": {
-          "name": "punctuation.definition.headingname.mediawiki"
-        },
-        "2": {
-          "name": "entity.name.section.mediawiki"
-        }
-      }
-    },
-    "heading6": {
-      "match": "^(======)(?!=)(([^=]+))(\\1)s*$\n?",
-      "name": "markup.heading.6.mediawiki",
-      "captures": {
-        "1": {
-          "name": "punctuation.definition.headingname.mediawiki"
-        },
-        "2": {
-          "name": "entity.name.section.mediawiki"
-        }
-      }
+      ]
     },
     "comment": {
-      "begin": "<--",
-      "end": "-->",
-      "name": "comment.block.mediawiki"
-    },
-    "comments": {
+      "name": "comment.block.html",
       "begin": "<!--",
       "end": "-->",
-      "name": "comment.block.html.mediawiki"
+      "captures": { "0": { "name": "punctuation.definition.comment.html" } },
+      "patterns": [
+        {
+          "match": "\\G-?>",
+          "name": "invalid.illegal.characters-not-allowed-here.html"
+        },
+        {
+          "match": "<!--(?!>)|<!-(?=-->)",
+          "name": "invalid.illegal.characters-not-allowed-here.html"
+        },
+        {
+          "match": "--!>",
+          "name": "invalid.illegal.characters-not-allowed-here.html"
+        }
+      ]
+    },
+    "emphasis": {
+      "patterns": [
+        {
+          "match": "(''''')(?!')((.*?))('''''|$)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "markup.bold" },
+            "3": { "name": "markup.italic" },
+            "4": { "name": "punctuation.definition.tag.end" }
+          }
+        },
+        {
+          "match": "(''')(?!')(.*?)('''|$)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "markup.bold" },
+            "3": { "name": "punctuation.definition.tag.end" }
+          }
+        },
+        {
+          "match": "('')(?!')(.*?)(''|$)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "markup.italic" },
+            "3": { "name": "punctuation.definition.tag.end" }
+          }
+        }
+      ]
+    },
+    "heading": {
+      "name": "markup.heading",
+      "patterns": [
+        {
+          "name": "markup.heading",
+          "match": "(={1,6})(.+?)(\\1)(?!=)",
+          "captures": {
+            "1": { "name": "punctuation.definition.heading" },
+            "2": { "name": "entity.name.section.mediawiki" },
+            "3": { "name": "punctuation.definition.heading" }
+          }
+        }
+      ]
+    },
+    "tag": {
+      "patterns": [
+        {
+          "name": "meta.tag.block.nowiki",
+          "begin": "(?i)(<)(nowiki)(\\s+.*?)?(>)",
+          "end": "(?i)(<\\/)(nowiki)\\s*(>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "entity.name.tag" },
+            "3": { "patterns": [{ "include": "#attribute" }] },
+            "4": { "name": "punctuation.definition.tag.end" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "entity.name.tag" },
+            "3": { "name": "punctuation.definition.tag.end" }
+          }
+        },
+        {
+          "name": "meta.tag.block.html",
+          "begin": "(?i)(<)(html)(\\s+.*?)?(>)",
+          "end": "(?i)(<\\/)(html)\\s*(>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "entity.name.tag" },
+            "3": { "patterns": [{ "include": "#attribute" }] },
+            "4": { "name": "punctuation.definition.tag.end" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "entity.name.tag" },
+            "3": { "name": "punctuation.definition.tag.end" }
+          },
+          "patterns": [{ "include": "text.html.basic" }]
+        },
+        {
+          "name": "meta.tag.block.any",
+          "begin": "(?i)(<\\/?)(noinclude|includeonly)(?=\\W)",
+          "end": "(\\/)?(>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "entity.name.tag" }
+          },
+          "endCaptures": {
+            "1": { "name": "invalid.illegal.characters-not-allowed-here" },
+            "2": { "name": "punctuation.definition.tag.end" }
+          },
+          "patterns": [{ "include": "#attribute" }]
+        },
+        {
+          "name": "meta.tag.other",
+          "begin": "(?i)(<)(br|wbr|hr|meta|link)(?=\\W)",
+          "end": "(\\/?>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "entity.name.tag" }
+          },
+          "endCaptures": { "1": { "name": "punctuation.definition.tag.end" } },
+          "patterns": [{ "include": "#attribute" }]
+        },
+        {
+          "name": "meta.tag.block",
+          "begin": "(?i)(<\\/?)(div|center|span|h1|h2|h3|h4|h5|h6|bdo|em|strong|cite|dfn|code|samp|kbd|var|abbr|blockquote|q|sub|sup|p|pre|ins|del|ul|ol|li|dl|dd|dt|table|caption|thead|tfoot|tbody|colgroup|col|tr|td|th|a|img|video|source|track|tt|b|i|big|small|strike|s|u|font|ruby|rb|rp|rt|rtc|math|figure|figcaption|bdi|data|time|mark|html)(?=\\W)",
+          "end": "(\\/)?(>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "entity.name.tag" }
+          },
+          "endCaptures": {
+            "1": { "name": "invalid.illegal.characters-not-allowed-here" },
+            "2": { "name": "punctuation.definition.tag.end" }
+          },
+          "patterns": [{ "include": "#attribute" }]
+        },
+        {
+          "name": "meta.tag.other",
+          "begin": "(?i)(<\\/)(br|wbr|hr|meta|link)(?=\\W)",
+          "end": "(\\/?>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "invalid.illegal.characters-not-allowed-here" },
+            "3": { "name": "entity.name.tag" }
+          },
+          "endCaptures": { "1": { "name": "punctuation.definition.tag.end" } },
+          "patterns": [{ "include": "#attribute" }]
+        }
+      ]
+    },
+    "table": {
+      "patterns": [
+        {
+          "name": "meta.tag.block.table",
+          "begin": "^\\s*({\\|)(.*?)$",
+          "end": "^\\s*\\|}",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "patterns": [{ "include": "#attribute" }] },
+            "3": { "name": "invalid.illegal" }
+          },
+          "endCaptures": { "0": { "name": "punctuation.definition.tag.end" } },
+          "patterns": [
+            { "include": "#comment" },
+            { "include": "#template" },
+            { "include": "#caption" },
+            { "include": "#tr" },
+            { "include": "#th" },
+            { "include": "#td" }
+          ]
+        }
+      ],
+      "repository": {
+        "caption": {
+          "name": "meta.tag.block.table-caption",
+          "begin": "^\\s*(\\|\\+)",
+          "end": "$",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" }
+          }
+        },
+        "tr": {
+          "name": "meta.tag.block.tr",
+          "match": "^\\s*(\\|\\-)[\\s]*(.*)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "name": "invalid.illegal" }
+          }
+        },
+        "th": {
+          "name": "meta.tag.block.th.heading",
+          "begin": "^\\s*(!)((.*?)(\\|))?(.*?)(?=(!!)|$)",
+          "end": "$",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "3": { "patterns": [{ "include": "#attribute" }] },
+            "4": { "name": "punctuation.definition.tag" },
+            "5": { "name": "markup.bold" }
+          },
+          "patterns": [
+            {
+              "name": "meta.tag.block.th.inline",
+              "match": "(!!)((.*?)(\\|))?(.*?)(?=(!!)|$)",
+              "captures": {
+                "1": { "name": "punctuation.definition.tag.begin" },
+                "3": { "patterns": [{ "include": "#attribute" }] },
+                "4": { "name": "punctuation.definition.tag" },
+                "5": { "name": "markup.bold" }
+              }
+            },
+            { "include": "$self" }
+          ]
+        },
+        "td": {
+          "name": "meta.tag.block.td",
+          "begin": "^\\s*(\\|)",
+          "end": "$",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin" },
+            "2": { "patterns": [{ "include": "#attribute" }] },
+            "3": { "name": "punctuation.definition.tag" }
+          },
+          "patterns": [{ "include": "$self" }]
+        }
+      }
+    },
+    "attribute": {
+      "patterns": [
+        { "include": "#string" },
+        { "name": "entity.other.attribute-name", "match": "\\w+" }
+      ]
+    },
+    "string": {
+      "patterns": [
+        { "name": "string.quoted.double", "begin": "\\\"", "end": "\\\"" },
+        { "name": "string.quoted.single", "begin": "\\'", "end": "\\'" }
+      ]
+    },
+    "url": {
+      "patterns": [
+        {
+          "name": "markup.underline.link",
+          "match": "(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:\\/?#\\[\\]@!\\$&'\\(\\)\\*\\+,;=.]+"
+        },
+        { "name": "invalid.illegal.characters-not-allowed-here", "match": ".*" }
+      ]
     }
   }
 }
