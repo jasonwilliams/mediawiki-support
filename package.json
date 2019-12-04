@@ -10,16 +10,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.helloWorld"
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "extension.helloWorld",
-        "title": "Hello World"
-      }
-    ],
     "languages": [
       {
         "id": "mediawiki",
@@ -39,7 +33,12 @@
         "scopeName": "text.html.mediawiki",
         "path": "./syntaxes/mediawiki.tmLanguage.json"
       }
-    ]
+    ],
+    "html": {
+      "customData": [
+        "./html-custom-data.json"
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
