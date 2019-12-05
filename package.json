@@ -31,14 +31,12 @@
       {
         "language": "mediawiki",
         "scopeName": "text.html.mediawiki",
-        "path": "./syntaxes/mediawiki.tmLanguage.json"
+        "path": "./syntaxes/mediawiki.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.javascript": "javascript"
+        }
       }
-    ],
-    "html": {
-      "customData": [
-        "./html-custom-data.json"
-      ]
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
