@@ -63,14 +63,20 @@
           "endCaptures": { "0": { "name": "storage.type.function" } },
           "patterns": [
             {
-              "name": "meta.template.attribute",
-              "begin": "(\\|)\\s*(\\w+)=",
+              "name": "meta.structure.dictionary",
+              "begin": "(\\|)\\s*(\\w+)\\s*(=)\\s*([^|}]*)",
               "end": "(?=}}|[|])",
               "beginCaptures": {
                 "1": { "name": "storage" },
-                "2": { "name": "variable.parameter.function" }
-              },
-              "patterns": [{ "include": "$self" }]
+                "2": { "name": "support.type.property-name" },
+                "3": {
+                  "name": "punctuation.separator.dictionary.key-value.mediawiki"
+                },
+                "4": {
+                  "name": "meta.structure.dictionary.value",
+                  "patterns": [{ "include": "$self" }]
+                }
+              }
             },
             {
               "name": "meta.template.value",
