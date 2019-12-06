@@ -197,7 +197,7 @@
             "2": { "name": "entity.name.tag" },
             "3": { "name": "punctuation.definition.tag.end" }
           },
-          "patterns": [{ "include": "#template" }]
+          "patterns": [{ "include": "$self" }]
         },
         {
           "name": "meta.tag.block.syntaxhighlight",
