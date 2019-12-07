@@ -1,5 +1,7 @@
 # mediawiki-support README
 
+<img src="./images/MediaWiki_logo_reworked_2.svg.png" width=200>
+
 This is the README for your extension "mediawiki-support". After writing up a brief description, we recommend including the following sections.
 
 ## Features
