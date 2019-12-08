@@ -13,7 +13,7 @@ Just add the URL and most of the parameters will be set.
 
 Web Archive data is also added automatically.  
 Example below:
-<img src="./images/webCitationExample.gif">
+<img src="./images/webCitation.gif">
 
 ## Release Notes
 
