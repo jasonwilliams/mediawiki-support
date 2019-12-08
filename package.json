@@ -1,17 +1,27 @@
 {
-  "name": "mediawiki-support",
-  "displayName": "MediaWiki Support",
-  "description": "",
+  "name": "mediawiki",
+  "displayName": "MediaWiki",
+  "description": "MediaWiki offers syntax highlighting and some features to help editing Wikipedia and MediaWiki projects",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.40.0"
   },
+  "keywords": [
+    "MediaWiki",
+    "Wikipedia"
+  ],
   "categories": [
+    "Language Packs",
+    "Programming Languages",
     "Other"
   ],
   "activationEvents": [
     "*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jasonwilliams/mediawiki-support"
+  },
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
@@ -22,7 +32,9 @@
           "mediawiki"
         ],
         "extensions": [
-          ".mediawiki"
+          ".mediawiki",
+          ".wikipedia",
+          ".wiki"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -51,6 +63,7 @@
     "pretest": "yarn run compile",
     "test": "node ./out/test/runTest.js"
   },
+  "icon": "images/MediaWiki_logo_reworked_2.svg.png",
   "devDependencies": {
     "@types/cheerio": "^0.22.15",
     "@types/glob": "^7.1.1",

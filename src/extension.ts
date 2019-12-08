@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { fetchWebContent } from "./webCitation";
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   // register a command that opens a cowsay-document
   context.subscriptions.push(
     vscode.commands.registerCommand("extension.addWebCitation", async () => {
@@ -10,15 +10,20 @@ export function activate(context: vscode.ExtensionContext) {
         placeHolder: "Add Web Citation..."
       });
       if (what) {
-        fetchWebContent(what)
-          .then((result: string) => {
-            vscode.window.showInformationMessage(result);
-            vscode.window.setStatusBarMessage("");
-          })
-          .catch(err => {
-            console.log(err);
-            vscode.window.setStatusBarMessage("Request failed...", 10000);
-          });
+        try {
+          const result = await fetchWebContent(what);
+          // get active editor
+          let editor = vscode.window.activeTextEditor;
+          if (editor?.selection) {
+            let selection = editor.selection;
+            editor?.edit(editBuilder => {
+              editBuilder.insert(selection.active, result);
+            });
+          }
+        } catch (err) {
+          console.log(err);
+          vscode.window.setStatusBarMessage("Request failed...", 10000);
+        }
       }
     })
   );

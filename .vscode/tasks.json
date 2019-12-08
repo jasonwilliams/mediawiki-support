@@ -13,11 +13,6 @@
       "group": {
         "kind": "build",
         "isDefault": true
-      },
-      "problemMatcher": {
-        "background": {
-          "beginsPattern": "hidden\\smodules$"
-        }
       }
     }
   ]
