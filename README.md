@@ -11,8 +11,7 @@ MediaWiki offers Syntax Highlighting for MediaWiki formats (including Wikipedia)
 You can easily add [web citations](https://en.wikipedia.org/wiki/Template:Cite_web) directly from VSCode. Useful for when updating Wikipedia.  
 Just add the URL and most of the parameters will be set.
 
-Web Archive data is also added automatically.  
-Example below:
+The WebArchive database is checked and URL-data added automatically (if exists).  
 <img src="./images/webCitation.gif">
 
 ## Release Notes
