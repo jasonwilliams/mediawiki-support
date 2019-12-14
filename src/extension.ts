@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { fetchWebContent } from "./webCitation";
+import { documentSymbolProvider } from "./symbolProvider";
 
 export async function activate(context: vscode.ExtensionContext) {
   // register a command that opens a cowsay-document
@@ -26,5 +27,12 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       }
     })
+  );
+
+  context.subscriptions.push(
+    vscode.languages.registerDocumentSymbolProvider(
+      "mediawiki",
+      documentSymbolProvider
+    )
   );
 }
