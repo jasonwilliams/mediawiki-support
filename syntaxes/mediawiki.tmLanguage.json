@@ -6,6 +6,8 @@
   "patterns": [
     { "include": "#variable" },
     { "include": "#comment" },
+    { "include": "#switch" },
+    { "include": "#redirect" },
     { "include": "#entity" },
     { "include": "#emphasis" },
     { "include": "#tag" },
@@ -36,6 +38,21 @@
         }
       ]
     },
+    "switch": {
+      "patterns": [{
+        "name": "constant.language",
+        "match": "__NOTOC__|__FORCETOC__|__TOC__|__NOEDITSECTION__|__NEWSECTIONLINK__|__NONEWSECTIONLINK__|__NOWYSIWYG__|__NOGALLERY__|__HIDDENCAT__|__EXPECTUNUSEDCATEGORY__|__NOCONTENTCONVERT__|__NOCC__|__NOTITLECONVERT__|__NOTC__|__START__|__END__|__INDEX__|__NOINDEX__|__STATICREDIRECT__|__NOGLOBAL__|__DISAMBIG__"
+      }]
+    },
+    "redirect": {
+      "patterns": [{
+        "match": "(^#REDIRECT|^#redirect|^#Redirect)(\\s+)",
+        "captures": {
+            "1": { "name": "keyword.control.redirect" },
+            "2": { "name": "meta.keyword.control" }
+        }
+      }]
+    },    
     "entity": {
       "patterns": [{ "name": "constant.character.entity", "match": "&\\w+;" }]
     },
