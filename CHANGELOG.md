@@ -1,9 +1,14 @@
-# Change Log
+# CHANGELOG
 
-All notable changes to the "mediawiki-support" extension will be documented in this file.
+# 0.0.2 (2020-03-08)
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+Feature enhancements:
 
-## [Unreleased]
+- [FEATURE #001](https://github.com/jasonwilliams/mediawiki-support/pull/1):
+  Support for [behaviour switches](https://www.mediawiki.org/wiki/Help:Magic_words#Behavior_switches) (@lmn8)
+- [FEATURE #001](https://github.com/jasonwilliams/mediawiki-support/pull/1):
+  Support for [Redirects](https://www.mediawiki.org/wiki/Help:Redirects) (@lmn8)
 
-- Initial release
+# 0.0.1
+
+Initial Release
