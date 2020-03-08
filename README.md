@@ -16,9 +16,7 @@ The WebArchive database is checked and URL-data added automatically (if exists).
 
 ## Release Notes
 
-### 0.0.1
-
-Initial release of MediaWiki
+See [Changelog](./CHANGELOG.md)
 
 ---
 
