@@ -2,7 +2,7 @@
   "name": "mediawiki",
   "displayName": "MediaWiki",
   "description": "MediaWiki offers syntax highlighting and some features to help editing Wikipedia and MediaWiki projects",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.40.0"
   },
