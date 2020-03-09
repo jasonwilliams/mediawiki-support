@@ -133,7 +133,7 @@ class WebResult {
   toString() {
     let result = `{{cite web |url=${this.url} |access-date=${this.accessDate}`;
     if (this.siteName) {
-      result = `${result} |site-name=${this.siteName}`;
+      result = `${result} |website=${this.siteName}`;
     }
 
     if (this.title) {
