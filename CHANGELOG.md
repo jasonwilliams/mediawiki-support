@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 0.0.4 (2020-12-06)
+
+- Updated correct fields for web citation
+
 # 0.0.2 (2020-03-08)
 
 Feature enhancements:
