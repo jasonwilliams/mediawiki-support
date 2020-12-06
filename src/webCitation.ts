@@ -27,7 +27,7 @@ class WebResult {
   archiveApiUrl: string;
   archivedUrl: string | null;
   archivedDate: string | null;
-  $!: CheerioStatic;
+  $!: any;
 
   constructor(url: string, archive: boolean = false) {
     this.url = url;
