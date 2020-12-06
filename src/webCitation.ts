@@ -141,7 +141,7 @@ class WebResult {
     }
 
     if (this.publishedDate) {
-      result = `${result} |published-date=${this.publishedDate}`;
+      result = `${result} |publication-date=${this.publishedDate}`;
     }
 
     if (this.archivedUrl) {
