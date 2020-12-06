@@ -1,0 +1,25 @@
+name: Publish Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+      - run: yarn install && npm rebuild
+      - name: Build and Pre-Publish
+        run: yarn vscode:prepublish
+      - name: Install VSCE
+        run: yarn add vsce
+      - name: Publish
+        run: yarn vsce publish -p $VSCE_TOKEN
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
