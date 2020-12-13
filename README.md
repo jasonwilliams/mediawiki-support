@@ -1,4 +1,9 @@
-# mediawiki README
+# [DEPRECATED] mediawiki README
+
+> This extension will no longer recieve updates.
+> It has been forked and maintained by [WikiText VSCode Extension](https://github.com/Frederisk/Wikitext-VSCode-Extension).
+
+> All the same functionality is there, so you shouldn't need this anymore.
 
 <img src="./images/MediaWiki_logo_reworked_2.svg.png" width=200>
 
